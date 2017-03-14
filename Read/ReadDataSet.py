@@ -11,7 +11,7 @@ class ReadDataSet:
         fp = open(self.filename + ".egofeat", 'r')
         return fp.readlines()
     def ReadFeat(self):
-        fp = open(self.filename + ".feats", 'r')
+        fp = open(self.filename + ".feat", 'r')
         return fp.readlines()
     def ReadFeatName(self):
         fp = open(self.filename + ".featnames", 'r')

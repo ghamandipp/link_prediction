@@ -8,4 +8,4 @@ if __name__ == '__main__':
     for ln in rd.ReadEdges():
         a,b = map(int,ln.split())
         G.add_edge(a,b)
-    print sorted(list(G.nodes()))
+    print sorted(list(G.neighbors(27985216)))
