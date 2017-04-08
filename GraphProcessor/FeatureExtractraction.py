@@ -16,21 +16,26 @@ def common_neighbors(G, ebunch):
 def ProcessNetwork(G, u):
     ebunch = []
     for v in G.nodes():
-        ebunch.append((u, v))
+        if v not in G.neighbors(u) and v != u:
+            ebunch.append((u, v))
 
-    adamic_adar_index_list = sim_index(G, ebunch, community='year')
-    jaccard_coefficient_list = sim_index(G, ebunch, community='department')
-    common_neighbors_list = sim_index(G, ebunch, community='native_place')
+    year_list = sim_index(G, ebunch, community='year')
+    department_list = sim_index(G, ebunch, community='department')
+    native_place_list = sim_index(G, ebunch, community='native_place')
+    gender_list = sim_index(G, ebunch, community='gender')
 
-    common_neighbor = sorted(common_neighbors_list, key=itemgetter(2), reverse=True)#[:10]
-    adamic_adar_index = sorted(adamic_adar_index_list, key=itemgetter(2), reverse=True)#[:10]
-    jaccard_coefficient = sorted(jaccard_coefficient_list, key=itemgetter(2), reverse=True)#[:10]
+    year = sorted(year_list, key=itemgetter(2), reverse=True)[:10]
+    department = sorted(department_list, key=itemgetter(2), reverse=True)[:10]
+    native_place = sorted(native_place_list, key=itemgetter(2), reverse=True)[:10]
+    gender = sorted(gender_list, key=itemgetter(2), reverse=True)[:10]
+
 
     rankList = []
-    rankList.append(common_neighbor)
-    rankList.append(adamic_adar_index)
-    rankList.append(jaccard_coefficient)
-    weights = [1,1,1]
+    rankList.append(year)
+    rankList.append(department)
+    rankList.append(native_place)
+    rankList.append(gender)
+    weights = [1,1,1,1]
 
     return rank(rankList,weights)
 
@@ -38,15 +43,20 @@ def ProcessNetwork(G, u):
 def rank(list1, list2):  # O(n^2)
     final_list = []
     rows = len(list1)
-    flattened = [val for sublist in list1 for val in sublist]
+    flattened = [val[1] for sublist in list1 for val in sublist]
     flattened = set(flattened)
     d = dict.fromkeys(flattened, 0)
     for row in xrange(rows):
         p = list2[row]
         cols = len(list1[row])
-        for col in xrange(cols):
-            d[list1[row][col]] += p
-            p *= 0.8
+        d[list1[row][0][1]] += p
+        for col in xrange(1, cols):
+            x = col - 1
+            if list1[row][col][2] == list1[row][x][2]:
+                d[list1[row][col][1]] += p
+            else:
+                p *= 0.8
+                d[list1[row][col][1]] += p
     sortedx = sorted(d.items(), key=operator.itemgetter(1), reverse=True)
     for i in sortedx:
         final_list.append(i[0])

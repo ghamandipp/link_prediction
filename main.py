@@ -19,8 +19,8 @@ if __name__ == '__main__':
     print sorted(list(G.neighbors(27985216)))"""
 
     # CSV Dataset Read and Flushed
-    rd = ReadDataSet("Data/Dataset")
-    rd.readCSV()
+    """rd = ReadDataSet("Data/Dataset")
+    rd.readCSV()"""
 
     # Create Graph and save
     """rd = ReadDataSet("Data/Slashdot0811")
@@ -41,12 +41,12 @@ if __name__ == '__main__':
 
 
     # Get Friends of node
-    """node = '2014BCS072'
+    node = '2014BCS061'
     print G.node[node]
     print ""
     pairL = ProcessNetwork(G, node)
-    for item in pairL[:5]:
-        print item[1],G.node[item[1]]"""
+    for item in pairL[:10]:
+        print item,G.node[item]
 
     # Calculate accuracies
     """lst = []

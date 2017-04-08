@@ -41,7 +41,6 @@ class ReadDataSet:
         flush(G)
 
 
-# Changes Required Below
 def readPersonalDetails(G, line):
     details = line.split(',')[1:6]
     iterator = 0
@@ -73,12 +72,18 @@ def readPersonalDetails(G, line):
     if flag:
         neighbors = line.split(',')[6:]
         for item in neighbors:
-            if item != "" and not G.has_node(item):
-                ln1 = "Default Timestamp,"+item+",Default User,Male,Other,,,,,,"
-                readPersonalDetails(G, ln1)
+            if rollNo != None and item != "":
+                item = fit(item)
+                if item != None:
+                    if not G.has_node(item):
+                        ln1 = "Default Timestamp,"+item+",Default User,Male,Other,,,,,,"
+                        readPersonalDetails(G, ln1)
+                    G.add_edge(rollNo,item)
+
 
 def fit(rollNo):
 
+    rollNo = rollNo.strip()
     if rollNo[-1] == "\n":
         rollNo = rollNo[:len(rollNo)-1]
 
@@ -86,12 +91,14 @@ def fit(rollNo):
         rollNo = rollNo[:4] + rollNo[4:7].upper() + rollNo[7:]
     elif len(rollNo) == 14:
         rollNo = rollNo[:4] + rollNo[4:9].upper() + rollNo[9:]
+    else:
+        rollNo = None
 
     return rollNo
 
 
 def extract(G, item):
-    dict = {"BTECS":"BCS","BTECV":"BCV","BTEIT":"BIT","BTEEL":"BEL","BTEEN":"BEN","BTEME":"BME"}
+    dict = {"BTECS":"BCS","BTECV":"BCV","BTEIT":"BIT","BTEEE":"BEL","BTEEL":"BEL","BTEEN":"BEN","BTEME":"BME"}
     year = int(item[0:4])
     department = None
     if len(item) == 10:
@@ -100,6 +107,8 @@ def extract(G, item):
     elif len(item) == 14:
         department = dict[item[4:9].upper()]
 
+    else:
+        return
     G.node[item]['year'] = year
     G.node[item]['department'] = department
 
