@@ -41,11 +41,11 @@ if __name__ == '__main__':
 
 
     # Get Friends of node
-    node = '2014BCS061'
+    node = '2014BCS072'
     print G.node[node]
     print ""
     pairL = ProcessNetwork(G, node)
-    for item in pairL[:10]:
+    for item in pairL:
         print item,G.node[item]
 
     # Calculate accuracies

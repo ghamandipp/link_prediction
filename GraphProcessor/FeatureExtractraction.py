@@ -24,10 +24,10 @@ def ProcessNetwork(G, u):
     native_place_list = sim_index(G, ebunch, community='native_place')
     gender_list = sim_index(G, ebunch, community='gender')
 
-    year = sorted(year_list, key=itemgetter(2), reverse=True)[:10]
-    department = sorted(department_list, key=itemgetter(2), reverse=True)[:10]
-    native_place = sorted(native_place_list, key=itemgetter(2), reverse=True)[:10]
-    gender = sorted(gender_list, key=itemgetter(2), reverse=True)[:10]
+    year = sorted(year_list, key=itemgetter(2), reverse=True)#[:10]
+    department = sorted(department_list, key=itemgetter(2), reverse=True)#[:10]
+    native_place = sorted(native_place_list, key=itemgetter(2), reverse=True)#[:10]
+    gender = sorted(gender_list, key=itemgetter(2), reverse=True)#[:10]
 
 
     rankList = []
@@ -39,7 +39,7 @@ def ProcessNetwork(G, u):
 
     return rank(rankList,weights)
 
-# Upgrade needed - same value of p for same sim_index value
+
 def rank(list1, list2):  # O(n^2)
     final_list = []
     rows = len(list1)
@@ -71,7 +71,10 @@ def sim_index(G, ebunch=None, community='department'):
         Cu = _community(G, u, community)
         Cv = _community(G, v, community)
         if Cu == Cv:
-            return 1
+            if G.node[v]['name'] == 'Default User':
+                return 0.5
+            else:
+                return 1
         else:
             return 0
 
